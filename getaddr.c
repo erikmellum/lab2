@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	struct ifaddrs *res, *p;
 	int status;
 	char ipstr[INET6_ADDRSTRLEN];
-
+	char* test;
 
 	if ((status = getifaddrs(&res)) != 0) {
 		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
@@ -39,8 +39,9 @@ int main(int argc, char *argv[])
 			struct sockaddr_in *ipv4 = (struct sockaddr_in *)p->ifa_addr;
 			addr = &(ipv4->sin_addr);
 			ipver = "AF_PACKET";
-		        //ipstr=ether_ntoa(p->ifa_addr);
-		        ipstr=ether_ntoa(p->ifa_addr);
+		       // inet_ntop(p->ifa_addr->sa_family, addr, ipstr, sizeof ipstr);
+			test =ether_ntoa(p->ifa_addr);
+		       // ipstr=ether_ntoa(p->ifa_addr);
 		} 
 		else { // IPv6
 			struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *)p->ifa_addr;
@@ -51,7 +52,7 @@ int main(int argc, char *argv[])
 
 		// convert the IP to a string and print it:
 		if(p->ifa_addr->sa_family == AF_PACKET){
-			printf("%5s   %12s  %30s\n", p->ifa_name, ipver, ipstr);
+			printf("%5s   %12s  %30s\n", p->ifa_name, ipver, test);
   		} else{
 			printf("%5s   %12s  %30s\n", p->ifa_name, ipver, ipstr);
 		}
